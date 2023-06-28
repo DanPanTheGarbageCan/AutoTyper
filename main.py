@@ -26,12 +26,10 @@ logging.getLogger().setLevel(logging.WARNING)
 class LauncherScreen(Screen):
 
     def launch(self):
-        # collects login info
         name = self.manager.current_screen.ids.school_name_input.text
         email = self.manager.current_screen.ids.email_input.text
         password = self.manager.current_screen.ids.password_input.text
-
-        # launches typing club
+        
         global driver
         driver = webdriver.Chrome(options=chrome_options)
 
@@ -39,7 +37,6 @@ class LauncherScreen(Screen):
         driver.get("https://clever.com")
         login(name, email, password, driver)
 
-        # switches screen
         keyboard.press('Alt')
         keyboard.press_and_release('Tab')
         keyboard.release('Alt')
@@ -56,7 +53,6 @@ class TyperScreen(Screen):
         self.loop(1)
 
     def loop(self, dt):
-
         if keyboard.is_pressed(self.start_keybind):
             self.typing = True
 
