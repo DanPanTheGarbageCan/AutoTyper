@@ -1,0 +1,60 @@
+<LauncherScreen>:
+    GridLayout:
+        cols: 1
+
+        TextInput:
+            id: school_name_input
+            text: ''
+            hint_text: 'Enter school name here'
+
+        TextInput:
+            id: email_input
+            text: ''
+            hint_text: 'Enter school email here'
+
+        TextInput:
+            id: password_input
+            text: ''
+            hint_text: 'Enter email password here'
+
+        Button:
+            id: Launch_button
+            text: 'Launch'
+            on_press: root.launch()
+
+<TyperScreen>:
+    GridLayout:
+        cols: 1
+
+        TextInput:
+            id: start_keybind_input
+            text: 'Delete'
+            hint_text: 'Enter start keybind here. Delete or other key that is not used in typing-club is recommended.'
+
+        TextInput:
+            id: stop_keybind_input
+            text: 'PgUp'
+            hint_text: 'Enter stop keybind here. Page Up or other key that is not used in typing-club is recommended.'
+
+        Button:
+            id: start_button
+            text: 'Press to start listening for keybind.'
+            on_press: root.start()
+
+        Button:
+            id: stop_button
+            text: 'Press to stop listening for keybind.'
+
+        Button:
+            id: quit_button
+            text:'Quit'
+            on_press: root.quit()
+
+<RootWidget>:
+    LauncherScreen:
+        id: Launcher_screen
+        name: 'Launcher_screen'
+
+    TyperScreen:
+        id: typer_screen
+        name: 'typer_screen'
