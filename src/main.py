@@ -26,12 +26,10 @@ Builder.load_file('frontend.kv')
 class LauncherScreen(Screen):
 
     def launch(self):
-        # collects login info
         name = self.manager.current_screen.ids.school_name_input.text
         email = self.manager.current_screen.ids.email_input.text
         password = self.manager.current_screen.ids.password_input.text
 
-        # launches typing club
         serv = ChromeService(ChromeDriverManager().install())
         serv.creationflags = CREATE_NO_WINDOW
         global driver
@@ -40,7 +38,6 @@ class LauncherScreen(Screen):
         driver.get("https://clever.com")
         login(name, email, password, driver)
 
-        # switches screen
         keyboard.press('Alt')
         keyboard.press_and_release('Tab')
         keyboard.release('Alt')
