@@ -1,42 +1,46 @@
-from login_function import login
-from type_function import type
-from check_window import check
-
 import logging
-
 import time
+from subprocess import CREATE_NO_WINDOW
 
 import keyboard
-
 import kivy.clock
 from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+from check_window import check
+from login_function import login
+from type_function import type
+
+logging.disable()
 
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
-chrome_options.add_argument("--log-level=3")
-
 Builder.load_file('frontend.kv')
-logging.getLogger().setLevel(logging.WARNING)
 
 
 class LauncherScreen(Screen):
 
     def launch(self):
+        # collects login info
         name = self.manager.current_screen.ids.school_name_input.text
         email = self.manager.current_screen.ids.email_input.text
         password = self.manager.current_screen.ids.password_input.text
-        
-        global driver
-        driver = webdriver.Chrome(options=chrome_options)
 
+        # launches typing club
+        serv = ChromeService(ChromeDriverManager().install())
+        serv.creationflags = CREATE_NO_WINDOW
+        global driver
+        driver = webdriver.Chrome(service=serv, options=chrome_options)
         driver.maximize_window()
         driver.get("https://clever.com")
         login(name, email, password, driver)
 
+        # switches screen
         keyboard.press('Alt')
         keyboard.press_and_release('Tab')
         keyboard.release('Alt')
@@ -53,6 +57,7 @@ class TyperScreen(Screen):
         self.loop(1)
 
     def loop(self, dt):
+
         if keyboard.is_pressed(self.start_keybind):
             self.typing = True
 
@@ -69,7 +74,7 @@ class TyperScreen(Screen):
 
     def quit(self):
         driver.close()
-        exit()
+        App.get_running_app().stop()
 
 class RootWidget(ScreenManager):
     pass
